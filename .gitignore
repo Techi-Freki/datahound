@@ -1,2 +1,7 @@
 .idea
+dist
+build
+*.egg-info
 venv
+scratch.py
+__py_cache__

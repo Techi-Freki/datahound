@@ -1,4 +1,5 @@
 import unittest
+import warnings
 
 from datahound import DataProviderBase
 
@@ -75,7 +76,6 @@ class DataProviderBaseTest(unittest.TestCase):
         sql = "insert into test (name) values ('booger')"
         dataProvider = DataProvider()
         dataProvider.execute(sql)
-        dataProvider.execute(sql)
 
         actual_sql = 'select * from test'
         actual = dataProvider.fetchall(actual_sql)
@@ -112,3 +112,16 @@ class DataProviderBaseTest(unittest.TestCase):
 
         self.assertTrue(type(last_id) == int)
         Helper.truncateTable('test')
+
+    def test_executereturnid_deprecation(self):
+        with warnings.catch_warnings(record=True) as warning:
+            warnings.simplefilter('always')
+
+            dataProvider = DataProvider()
+            sql = 'insert into test (name) values (?)'
+            dataProvider.execute_return_id(sql, 'testing')
+
+            assert len(warning) == 1
+            assert issubclass(warning[-1].category, DeprecationWarning)
+            assert 'This method is deprecated. It will be removed in an upcoming version.\
+                               Please use "insert_return_id" instead.' in str(warning[-1].message)

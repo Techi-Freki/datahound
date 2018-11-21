@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='datahound',
-    version='1.0.1',
+    version='1.0.2',
     packages=find_packages(),
     url='https://python.dbcombs.com/datahound',
     license='WTFPL',
@@ -21,6 +21,6 @@ setup(
     classifiers=[
         'Programming Language :: Python :: 3.0',
         'License :: WTFPL License',
-        'Operating System :: OS  Independent'
+        'Operating System :: OS Independent'
     ]
 )

@@ -123,5 +123,5 @@ class DataProviderBaseTest(unittest.TestCase):
 
             assert len(warning) == 1
             assert issubclass(warning[-1].category, DeprecationWarning)
-            assert 'This method is deprecated. It will be removed in an upcoming version.\
-                               Please use "insert_return_id" instead.' in str(warning[-1].message)
+            assert 'This method is deprecated. It will be removed in an upcoming version. Please use "insert_return_id" instead.'\
+                   in str(warning[-1].message)

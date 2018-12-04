@@ -17,7 +17,7 @@ setup(
     description='sqlite3 data access layer',
     long_description_content_type='text/markdown',
     long_description=readme(),
-    install_requires=['sqlite3'],
+    install_requires=[],
     classifiers=[
         'Programming Language :: Python :: 3.0',
         'License :: WTFPL License',

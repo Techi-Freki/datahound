@@ -53,8 +53,7 @@ class DataProviderBase(object):
         return returned_id
 
     def execute_return_id(self, sql: str, *parameters) -> int:
-        deprecation_message = 'This method is deprecated. It will be removed in an upcoming version.\
-                               Please use "insert_return_id" instead.'
+        deprecation_message = 'This method is deprecated. It will be removed in an upcoming version. Please use "insert_return_id" instead.'
 
         warnings.warn(deprecation_message, DeprecationWarning, stacklevel=2)
         connection = self.__get_connection()

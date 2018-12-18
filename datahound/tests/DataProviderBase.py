@@ -60,6 +60,7 @@ class DataProviderBaseTest(unittest.TestCase):
         self.assertGreater(len(actual), 0)
 
     def test_executeInsertTruncate(self):
+        Helper.truncateTable('test')
         sql = "insert into test (name) values ('datatest1')"
         dataProvider = DataProvider()
         dataProvider.execute(sql)
@@ -73,7 +74,8 @@ class DataProviderBaseTest(unittest.TestCase):
         self.assertEqual(len(cleaned), 0)
 
     def test_fetchall(self):
-        sql = "insert into test (name) values ('booger')"
+        Helper.truncateTable('test')
+        sql = "insert into test (name) values ('booger'), ('testing')"
         dataProvider = DataProvider()
         dataProvider.execute(sql)
 
@@ -121,7 +123,7 @@ class DataProviderBaseTest(unittest.TestCase):
             sql = 'insert into test (name) values (?)'
             dataProvider.execute_return_id(sql, 'testing')
 
-            assert len(warning) == 1
-            assert issubclass(warning[-1].category, DeprecationWarning)
-            assert 'This method is deprecated. It will be removed in an upcoming version. Please use "insert_return_id" instead.'\
-                   in str(warning[-1].message)
+            self.assertTrue(len(warning) == 1)
+            self.assertTrue(issubclass(warning[-1].category, DeprecationWarning))
+            self.assertTrue('This method is deprecated. It will be removed in an upcoming version. Please use "insert_return_id" instead.'\
+                   in str(warning[-1].message))

@@ -1,5 +1,6 @@
 import sqlite3
-import warnings
+
+from deprecateme import deprecated
 
 
 class DataProviderBase(object):
@@ -42,6 +43,11 @@ class DataProviderBase(object):
         connection.close()
 
     def insert_return_id(self, sql: str, *parameters) -> int:
+        split_sql = sql.split(' ')
+
+        if split_sql[0].lower() != 'insert':
+            raise AttributeError('The sql statement must be an insert statement')
+
         connection = self.__get_connection()
         cursor = connection.cursor()
 
@@ -52,10 +58,9 @@ class DataProviderBase(object):
         connection.close()
         return returned_id
 
+    @deprecated('This method is deprecated. It will be removed in an upcoming version. '
+                'Please use "insert_return_id" instead.')
     def execute_return_id(self, sql: str, *parameters) -> int:
-        deprecation_message = 'This method is deprecated. It will be removed in an upcoming version. Please use "insert_return_id" instead.'
-
-        warnings.warn(deprecation_message, DeprecationWarning, stacklevel=2)
         connection = self.__get_connection()
         cursor = connection.cursor()
 

@@ -43,6 +43,11 @@ class DataProviderBase(object):
         connection.close()
 
     def insert_return_id(self, sql: str, *parameters) -> int:
+        split_sql = sql.split(' ')
+
+        if split_sql[0].lower() != 'insert':
+            raise AttributeError('The sql statement must be an insert statement')
+
         connection = self.__get_connection()
         cursor = connection.cursor()
 

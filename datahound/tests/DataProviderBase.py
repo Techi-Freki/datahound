@@ -127,3 +127,17 @@ class DataProviderBaseTest(unittest.TestCase):
             self.assertTrue(issubclass(warning[-1].category, DeprecationWarning))
             self.assertTrue('This method is deprecated. It will be removed in an upcoming version. Please use "insert_return_id" instead.'\
                    in str(warning[-1].message))
+
+    def test_insertreturnid(self):
+        dataProvider = DataProvider()
+        sql = 'insert into test (name) values (?)'
+        last_id = dataProvider.insert_return_id(sql, 'testing')
+
+        self.assertTrue(type(last_id) == int)
+        Helper.truncateTable('test')
+
+    def test_insertreturnid_fail(self):
+        dataProvider = DataProvider()
+        sql = "update test set name = 'test' where id = 1"
+
+        self.assertRaises(Exception, lambda: dataProvider.insert_return_id(sql))

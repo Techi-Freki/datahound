@@ -5,9 +5,12 @@ SqLite data access layer for python.
 ##Methods
 
 * fetchone(sql: str, *args) -> tuple
-* fetchall(sql: str, *args) -> generator
-* execute(sql: str, *args) -> None
+* fetchmany(amount: int, sql: str, *args) -> list
+* fetchall(sql: str, *args) -> list
 * insert_return_id(sql: str, *args) -> int
+* insert_many(sql: str, *args) -> None
+* execute(sql: str, *args) -> None
+* execute_scripts(sql: str) -> None
 * execute_return_id(sql: str, *args) -> int (deprecated)
 
 ##Usage
@@ -72,6 +75,10 @@ SqLite data access layer for python.
     >> (1, 'Mark', 25)
 
 ##Changelog
+
+1.1.0
+
+* Added **insert_many** and **execute_scripts** to methods. Updated readme and cleaned up private method in package.
 
 1.0.2
 

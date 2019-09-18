@@ -85,6 +85,16 @@ class DataProviderBaseTest(unittest.TestCase):
         Helper.truncateTable('test')
         self.assertEqual(len(dataProvider.fetchall(actual_sql)), 0)
 
+    def test_fetchmany(self):
+        sql = "insert into test (name) values ('boogers'), ('boogers1'), ('boogers3'), ('boogers4')"
+        dataProvider = DataProvider()
+        dataProvider.execute(sql)
+
+        actual_sql = "select * from test where name like '%boogers%'"
+        actual = dataProvider.fetchmany(3, actual_sql)
+        self.assertEqual(len(actual), 3)
+        Helper.truncateTable('test')
+
     def test_fetchone(self):
         sql = "insert into test (name) values ('fetchone')"
         dataProvider = DataProvider()
@@ -95,6 +105,24 @@ class DataProviderBaseTest(unittest.TestCase):
         self.assertIsNotNone(actual)
         Helper.truncateTable('test')
         self.assertIsNone(dataProvider.fetchone(actual_sql))
+
+    def test_execute_scripts(self):
+        sql = "create table if not exists testing (id integer not null primary key autoincrement, name varchar(64)" \
+              " not null); insert into testing (name) values ('testing1'), ('testing2')"
+        dataProvider = DataProvider()
+        dataProvider.execute_scripts(sql)
+
+        actual_sql = 'select * from testing'
+        actual = dataProvider.fetchall(actual_sql)
+        self.assertIsNotNone(actual)
+        self.assertEqual(len(actual), 2)
+        dataProvider.execute('drop table testing')
+
+    def test_execute_scripts_fail(self):
+        sql = "create table if not exists testing (id integer not null primary key autoincrement, name varchar(64)" \
+              "not null)"
+        dataProvider = DataProvider()
+        self.assertRaises(Exception, lambda: dataProvider.execute_scripts(sql))
 
     def test_fetchallwithparameters(self):
         dataProvider = DataProvider()
@@ -141,3 +169,24 @@ class DataProviderBaseTest(unittest.TestCase):
         sql = "update test set name = 'test' where id = 1"
 
         self.assertRaises(Exception, lambda: dataProvider.insert_return_id(sql))
+
+    def test_insertmany(self):
+        dataProvider = DataProvider()
+        sql = 'INSERT INTO test (name) VALUES (?)'
+        parameters = ('Test1',), ('Test2',), ('Test3',)
+        dataProvider.insert_many(sql, *parameters)
+
+        sql = 'SELECT name FROM test WHERE name IN (\'Test1\', \'Test2\', \'Test3\')'
+        records = dataProvider.fetchall(sql)
+
+        for record in records:
+            self.assertTrue(record in parameters)
+
+        Helper.truncateTable('test')
+
+    def test_insertmany_fail(self):
+        dataProvider = DataProvider()
+        sql = 'UPDATE test SET name = \'Testing\' WHERE id = 0'
+        parameters = ('Test1',), ('Test2',), ('Test3',)
+
+        self.assertRaises(Exception, lambda: dataProvider.insert_many(sql, *parameters))

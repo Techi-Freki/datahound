@@ -48,7 +48,6 @@ class DataProviderBase(object):
             raise AttributeError('The sql statement must be an insert statement')
         return self.executor.execute(ExecutionType.EXECUTE_MANY, sql, *parameters)
 
-
     @deprecated('This method is deprecated. It will be removed in the next full version. '
                 'Please use "insert_return_id" instead.')
     def execute_return_id(self, sql: str, *parameters) -> int:

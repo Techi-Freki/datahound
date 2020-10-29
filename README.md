@@ -76,21 +76,29 @@ SqLite data access layer for python.
 
 ##Changelog
 
+1.1.1
+
+* Refactored code to improve performance and comply with PEP.
+* Updated README.md formatting.
+
 1.1.0
 
-* Added **insert_many** and **execute_scripts** to methods. Updated readme and cleaned up private method in package.
+* Added **insert_many** and **execute_scripts** to methods.
+* Updated README.md and cleaned up private method in package.
 
 1.0.2
 
-* Added **insert_return_id** and deprecated **execute_return_id** due to readability issues. Removed extra space in the setup.py file.
+* Added **insert_return_id** and deprecated **execute_return_id** due to readability issues.
+* Removed extra space in the setup.py file.
 
 1.0.1
 
-* Added MANIFEST.in and updated setup.py. Updated README.md to give clearer sql statements in the usage section.
+* Added MANIFEST.in and updated setup.py.
+* Updated README.md to give clearer sql statements in the usage section.
 
 1.0.0
 
-* Added **execute_return_id** method. A method that returns the last inserted id after a successful insert.
+* Added **execute_return_id** method, a method that returns the last inserted id after a successful insert.
 
 1.0.0RC1
 

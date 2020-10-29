@@ -21,21 +21,29 @@ SqLite data access layer for python.
     
     
     # extend the provider base class
-    class DataProvider(DataProviderBase):
+    class DataProviderOne(DataProviderBase):
         db_path = '/path/to/database/test.db'
         
         def __init__(self):
-            super().__init__(DataProvider.db_path)
+            super().__init__(DataProviderOne.db_path)
     
     
-    class SiteDataProvider(object):
-        test_data = new DataProvider()
+    class DataProviderTwo(DataProviderBase):
+        db_path = '../alternate/data/test.db
+        
+        def __init__(self):
+            super().__init__(DataProviderTwo.db_path)
+    
+    
+    class AppDataProvider(object):
+        test_data_one = new DataProviderOne()
+        test_data_two = new DataProviderTwo()
     
 ###Running Queries
 
     def get_data():
         sql = 'SELECT id, name, age FROM user;'
-        results = SiteDataProvider.test_data.fetchall(sql)
+        results = AppDataProvider.test_data_one.fetchall(sql)
         
         return list(results)
     
@@ -46,7 +54,7 @@ SqLite data access layer for python.
     def return_id(name, age):
         sql = 'INSERT INTO user (name, age) VALUES (?, ?)'
         parameters = (name, age)
-        return SiteDataProvider.test_data.insert_return_id(sql, *parameters)
+        return AppDataProvider.test_data_one.insert_return_id(sql, *parameters)
     
     
     return_id('Angela', 27)
@@ -60,7 +68,7 @@ SqLite data access layer for python.
     
     def get_record(id):
         sql = 'SELECT id, name, age FROM user WHERE id = ?'
-        result = SiteDataProvider.test_data.fetchone(sql, id)
+        result = AppDataProvider.test_data_one.fetchone(sql, id)
         
         return result
 
@@ -68,7 +76,7 @@ SqLite data access layer for python.
     def insert_record(user):
         sql = 'INSERT INTO user (name, age) VALUES (?, ?)'
         parameters = (user.name, user.age)
-        SiteDataProvider.test_data.execute(sql, *parameters)
+        AppDataProvider.test_data_one.execute(sql, *parameters)
         
         
     get_record(1)

@@ -1,0 +1,9 @@
+.idea
+dist
+build
+*.egg-info
+venv
+scratch.py
+__pycache__
+*.sqlite3
+/datahound/tests/db/*.sqlite3

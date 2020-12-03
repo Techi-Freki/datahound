@@ -13,6 +13,9 @@ SqLite data access layer for python.
 * execute_scripts(sql: str) -> None
 * execute_return_id(sql: str, *args) -> int (deprecated)
 
+##Modules
+encoders
+
 ##Usage
 
 ###Extending Provider Base
@@ -83,6 +86,9 @@ SqLite data access layer for python.
     >> (1, 'Mark', 25)
 
 ##Changelog
+
+1.1.2
+* Added an encoder module with a DatahoundEncoder class.
 
 1.1.1
 

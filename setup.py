@@ -18,7 +18,7 @@ setup(
     long_description_content_type='text/markdown',
     long_description=readme(),
 	dependency_links=['https://python.dbcombs.com/simple'],
-    install_requires=['deprecateme'],
+    install_requires=['deprecateme', 'mariadb'],
     classifiers=[
         'Programming Language :: Python :: 3.0',
         'License :: WTFPL License',

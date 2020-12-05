@@ -1,6 +1,6 @@
 import sqlite3
 
-# from deprecateme import deprecated
+from deprecateme import deprecated
 from datahound.managers import ExecutionType, Executor
 
 
@@ -48,8 +48,8 @@ class DataProviderBase(object):
             raise AttributeError('The sql statement must be an insert statement')
         return self.executor.execute(ExecutionType.EXECUTE_MANY, sql, *parameters)
 
-#    @deprecated('This method is deprecated. It will be removed in the next full version. '
-#                'Please use "insert_return_id" instead.')
+    @deprecated('This method is deprecated. It will be removed in the next full version. '
+                'Please use "insert_return_id" instead.')
     def execute_return_id(self, sql: str, *parameters) -> int:
         """Inserts a record and returns the primary key value of the record inserted."""
         connection = self._get_connection()
@@ -62,7 +62,7 @@ class DataProviderBase(object):
         connection.close()
         return returned_id
 
-#    @deprecated('This method is deprecated. It will be removed in the next full version.')
+    @deprecated('This method is deprecated. It will be removed in the next full version.')
     def _get_connection(self) -> sqlite3.Connection:
         try:
             connection = sqlite3.connect(self.db_path)

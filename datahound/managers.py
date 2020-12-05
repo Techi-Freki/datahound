@@ -17,7 +17,7 @@ class ExecutionType(Enum):
 @unique
 class DatabaseType(Enum):
     SQLITE = 1
-    MYSQL = 2
+    MARIADB = 2
     MSSQL = 3
     ETC = 4
 

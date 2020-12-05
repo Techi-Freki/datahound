@@ -1,7 +1,22 @@
 import sqlite3
 
 from deprecateme import deprecated
-from datahound.managers import ExecutionType, Executor
+
+from .managers import ExecutionType, Executor
+
+
+class ConnectionString(object):
+    def __init__(self, **kwargs):
+        self.database_path = None
+        self.database_name = None
+        self.user_name = None
+        self.password = None
+        self.host = None
+        self.port = None
+
+        for key, value in kwargs.items():
+            if hasattr(ConnectionString, key):
+                setattr(ConnectionString, key, value)
 
 
 class DataProviderBase(object):

@@ -28,15 +28,15 @@ class Executor(object):
 
     def execute(self, execution_type, sql, *parameters, amount=0):
         if parameters:
-            if 'FETCH' in execution_type.name:
+            if self._execution_is_fetch(execution_type):
                 return self._fetch(execution_type, amount, sql, parameters)
-            elif execution_type.name is 'RETURN_ID':
+            elif execution_type is ExecutionType.RETURN_ID:
                 return self._execute(execution_type, sql, parameters)
             self._execute(execution_type, sql, parameters)
         else:
-            if 'FETCH' in execution_type.name:
+            if self._execution_is_fetch(execution_type):
                 return self._fetch(execution_type, amount, sql)
-            elif execution_type.name is 'RETURN_ID':
+            elif execution_type.name is ExecutionType.RETURN_ID:
                 return self._execute(execution_type, sql)
             self._execute(execution_type, sql)
 
@@ -61,12 +61,12 @@ class Executor(object):
         cursor = connection.cursor()
 
         if parameters:
-            if execution_type.name is 'EXECUTE_MANY':
+            if execution_type is ExecutionType.EXECUTE_MANY:
                 cursor.executemany(sql, *parameters)
             else:
                 cursor.execute(sql, *parameters)
         else:
-            if execution_type.name is 'EXECUTE_SCRIPT':
+            if execution_type.name is ExecutionType.EXECUTE_SCRIPT:
                 cursor.executescript(sql)
             else:
                 cursor.execute(sql)
@@ -74,13 +74,21 @@ class Executor(object):
         connection.commit()
         return_id = None
 
-        if execution_type.name is 'RETURN_ID':
+        if execution_type.name is ExecutionType.RETURN_ID:
             return_id = cursor.lastrowid
 
         connection.close()
 
         if return_id is not None:
             return return_id
+
+    def _execution_is_fetch(self, execution_type: ExecutionType) -> bool:
+        if execution_type is ExecutionType.FETCH_ALL \
+            or execution_type is ExecutionType.FETCH_MANY \
+            or execution_type is ExecutionType.FETCH_ONE:
+            return True
+        else:
+            return False
 
 
 class _ConnectionManager(object):

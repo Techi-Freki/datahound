@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='datahound',
-    version='1.1.2',
+    version='2.0.0',
     packages=find_packages(),
     url='https://python.dbcombs.com/simple/datahound',
     license='WTFPL',
@@ -17,8 +17,7 @@ setup(
     description='sqlite3 data access layer',
     long_description_content_type='text/markdown',
     long_description=readme(),
-	dependency_links=['https://python.dbcombs.com/simple'],
-    install_requires=['deprecateme', 'mariadb'],
+    install_requires=['mariadb'],
     classifiers=[
         'Programming Language :: Python :: 3.0',
         'License :: WTFPL License',

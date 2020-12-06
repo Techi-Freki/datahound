@@ -3,19 +3,17 @@ import sqlite3
 
 from abc import ABC, abstractmethod
 
-from . import ConnectionString
-
 
 class _ConnectorBase(ABC):
     @staticmethod
     @abstractmethod
-    def get_connection(connection_string: ConnectionString):
+    def get_connection(connection_string):
         pass
 
 
 class MariaDbConnector(_ConnectorBase):
     @staticmethod
-    def get_connection(connection_string: ConnectionString):
+    def get_connection(connection_string):
         return mariadb.connect(
             user=connection_string.user,
             password=connection_string.password,
@@ -25,7 +23,7 @@ class MariaDbConnector(_ConnectorBase):
         )
 
 
-class SqLite3Connector(_ConnectorBase):
+class _SqLite3Connector(_ConnectorBase):
     @staticmethod
-    def get_connection(connection_string: ConnectionString):
+    def get_connection(connection_string):
         return sqlite3.connect(connection_string.database_path)

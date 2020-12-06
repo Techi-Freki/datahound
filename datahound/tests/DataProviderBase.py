@@ -1,38 +1,46 @@
 import unittest
-import warnings
 import os
 
 from datahound import DataProviderBase
+from datahound import ConnectionString
+from datahound import DatabaseType
 
 
-table_name = 'test_table'
+# TODO: Fix tests for both sqlite and mariadb
+
+table_name: str = 'test_table'
+
+sqlite_connection = ConnectionString(DatabaseType.SQLITE,
+                                     database_path=f'{os.path.dirname(os.path.abspath(__file__))}/db/tests.sqlite3')
+
+mariadb_connection = ConnectionString(DatabaseType.MARIADB,
+                                      user='cms_user',
+                                      password='cms_pass',
+                                      host='127.0.0.1',
+                                      port=3307,
+                                      database_name='cms_test'
+                                      )
+
+failed_connection = ConnectionString(DatabaseType.SQLITE,
+                                     database_path=f'{os.path.dirname(os.path.abspath(__file__))}/db/error_db.txt')
 
 
-class DataProvider(DataProviderBase):
-    relative_path = 'db/tests.sqlite3'
-    db_path = f'{os.path.dirname(os.path.abspath(__file__))}/{relative_path}'
-
+class SqLiteProvider(DataProviderBase):
     def __init__(self):
-        super().__init__(DataProvider.db_path)
-
-    def __del__(self):
-        self.db_path = None
+        super().__init__(sqlite_connection)
 
 
 class FalseProvider(DataProviderBase):
     db_path = 'db/error_db.txt'
 
     def __init__(self):
-        super().__init__(FalseProvider.db_path)
-
-    def __del__(self):
-        self.db_path = None
+        super().__init__(failed_connection)
 
 
 class Helper(object):
     @staticmethod
     def setup():
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         sql = f'create table if not exists {table_name} (' \
             'id integer not null primary key autoincrement, ' \
             'name varchar(32) not null)'
@@ -40,18 +48,26 @@ class Helper(object):
 
     @staticmethod
     def cleanup():
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         sql = f'drop table {table_name}'
         data_provider.execute(sql)
 
     @staticmethod
     def truncate_table(table):
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         sql = f'delete from {table}'
         data_provider.execute(sql)
 
 
 class DataProviderBaseTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        Helper.setup()
+
+    @classmethod
+    def tearDownClass(cls):
+        Helper.cleanup()
+
     def test_connection_error(self):
         sql = f'select * from {table_name}'
         provider = FalseProvider()
@@ -59,7 +75,7 @@ class DataProviderBaseTest(unittest.TestCase):
 
     def test_executeCreate(self):
         Helper.setup()
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
 
         sql = f"select name from sqlite_master where type='table' and name='{table_name}'"
         actual = data_provider.fetchall(sql)
@@ -68,7 +84,7 @@ class DataProviderBaseTest(unittest.TestCase):
     def test_executeInsertTruncate(self):
         Helper.truncate_table(table_name)
         sql = f"insert into {table_name} (name) values ('datatest1')"
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         data_provider.execute(sql)
 
         actual_sql = f'select * from {table_name}'
@@ -82,7 +98,7 @@ class DataProviderBaseTest(unittest.TestCase):
     def test_fetchall(self):
         Helper.truncate_table(table_name)
         sql = f"insert into {table_name} (name) values ('booger'), ('testing')"
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         data_provider.execute(sql)
 
         actual_sql = f'select * from {table_name}'
@@ -93,7 +109,7 @@ class DataProviderBaseTest(unittest.TestCase):
 
     def test_fetchmany(self):
         sql = f"insert into {table_name} (name) values ('boogers'), ('boogers1'), ('boogers3'), ('boogers4')"
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         data_provider.execute(sql)
 
         actual_sql = f"select * from {table_name} where name like '%boogers%'"
@@ -103,7 +119,7 @@ class DataProviderBaseTest(unittest.TestCase):
 
     def test_fetchone(self):
         sql = f"insert into {table_name} (name) values ('fetchone')"
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         data_provider.execute(sql)
 
         actual_sql = f'select * from {table_name} limit 1'
@@ -115,7 +131,7 @@ class DataProviderBaseTest(unittest.TestCase):
     def test_execute_scripts(self):
         sql = f"create table if not exists {table_name} (id integer not null primary key autoincrement," \
               f" name varchar(64) not null); insert into {table_name} (name) values ('testing1'), ('testing2')"
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         data_provider.execute_scripts(sql)
 
         actual_sql = f'select * from {table_name}'
@@ -127,11 +143,11 @@ class DataProviderBaseTest(unittest.TestCase):
     def test_execute_scripts_fail(self):
         sql = f"create table if not exists {table_name} (id integer not null primary key autoincrement," \
               " name varchar(64) not null)"
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         self.assertRaises(Exception, lambda: data_provider.execute_scripts(sql))
 
     def test_fetchallwithparameters(self):
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         sql = f'insert into {table_name} (name) values (?), (?)'
         data_provider.execute(sql, 'test1', 'test2')
 
@@ -141,29 +157,9 @@ class DataProviderBaseTest(unittest.TestCase):
         self.assertEqual([('test1',)], actual)
         Helper.truncate_table(table_name)
 
-    def test_executereturnid(self):
-        Helper.setup()
-        data_provider = DataProvider()
-        sql = f'insert into {table_name} (name) values (?)'
-        last_id = data_provider.execute_return_id(sql, 'testing')
-
-        self.assertTrue(type(last_id) == int)
-        Helper.truncate_table(table_name)
-
-    def test_executereturnid_deprecation(self):
-        with warnings.catch_warnings(record=True) as warning:
-            warnings.simplefilter('always')
-            Helper.setup()
-            data_provider = DataProvider()
-            sql = f'insert into {table_name} (name) values (?)'
-            data_provider.execute_return_id(sql, 'testing')
-
-            self.assertTrue(len(warning) != 0)
-            self.assertTrue(issubclass(warning[-1].category, DeprecationWarning))
-
     def test_insertreturnid(self):
         Helper.setup()
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         sql = f'insert into {table_name} (name) values (?)'
         last_id = data_provider.insert_return_id(sql, 'testing')
 
@@ -172,13 +168,13 @@ class DataProviderBaseTest(unittest.TestCase):
 
     def test_insertreturnid_fail(self):
         Helper.setup()
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         sql = f"update {table_name} set name = 'test' where id = 1"
 
         self.assertRaises(Exception, lambda: data_provider.insert_return_id(sql))
 
     def test_insertmany(self):
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         sql = f'INSERT INTO {table_name} (name) VALUES (?)'
         parameters = ('Test1',), ('Test2',), ('Test3',)
         data_provider.insert_many(sql, *parameters)
@@ -192,7 +188,7 @@ class DataProviderBaseTest(unittest.TestCase):
         Helper.truncate_table(table_name)
 
     def test_insertmany_fail(self):
-        data_provider = DataProvider()
+        data_provider = SqLiteProvider()
         sql = f'UPDATE {table_name} SET name = \'Testing\' WHERE id = 0'
         parameters = ('Test1',), ('Test2',), ('Test3',)
 

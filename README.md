@@ -4,14 +4,13 @@ SqLite data access layer for python.
 
 ##Methods
 
-* fetchone(sql: str, *args) -> tuple
-* fetchmany(amount: int, sql: str, *args) -> list
-* fetchall(sql: str, *args) -> list
-* insert_return_id(sql: str, *args) -> int
-* insert_many(sql: str, *args) -> None
-* execute(sql: str, *args) -> None
+* fetchone(sql: str, *parameters) -> tuple
+* fetchmany(amount: int, sql: str, *parameters) -> list
+* fetchall(sql: str, *parameters) -> list
+* insert_return_id(sql: str, *parameters) -> int
+* insert_many(sql: str, *parameters) -> None
+* execute(sql: str, *parameters) -> None
 * execute_scripts(sql: str) -> None
-* execute_return_id(sql: str, *args) -> int (deprecated)
 
 ##Modules
 encoders
@@ -86,6 +85,9 @@ encoders
     >> (1, 'Mark', 25)
 
 ##Changelog
+
+2.0.0
+* Added MariaDB support.
 
 1.1.2
 * Added an encoder module with a DatahoundEncoder class.

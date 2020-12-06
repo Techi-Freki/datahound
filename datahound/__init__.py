@@ -2,21 +2,22 @@ import sqlite3
 
 from deprecateme import deprecated
 
-from .managers import ExecutionType, Executor
+from .managers import DatabaseType, ExecutionType, Executor
 
 
 class ConnectionString(object):
-    def __init__(self, **kwargs):
+    def __init__(self, database_type: DatabaseType, **kwargs):
         self.database_path = None
         self.database_name = None
-        self.user_name = None
+        self.user = None
         self.password = None
         self.host = None
         self.port = None
+        self.database_type = database_type
 
         for key, value in kwargs.items():
-            if hasattr(ConnectionString, key):
-                setattr(ConnectionString, key, value)
+            if hasattr(self, key):
+                setattr(self, key, value)
 
 
 class DataProviderBase(object):

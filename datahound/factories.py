@@ -1,6 +1,6 @@
 from enum import Enum, unique
 
-from .connectors import MariaDbConnector as _MariaDbConnector, _SqLite3Connector as _SqLite3Connector
+from .connectors import MariaDbConnector as _MariaDbConnector, SqLite3Connector as _SqLite3Connector
 from .exceptions import ConnectorException as _ConnectorException
 
 

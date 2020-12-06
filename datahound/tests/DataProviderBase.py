@@ -24,6 +24,8 @@ mariadb_connection = ConnectionString(DatabaseType.MARIADB,
 failed_connection = ConnectionString(DatabaseType.SQLITE,
                                      database_path=f'{os.path.dirname(os.path.abspath(__file__))}/db/error_db.txt')
 
+providers = [sqlite_connection, mariadb_connection]
+
 
 class SqLiteProvider(DataProviderBase):
     def __init__(self):
@@ -82,7 +84,7 @@ class DataProviderBaseTest(unittest.TestCase):
         self.assertGreater(len(actual), 0)
 
     def test_executeInsertTruncate(self):
-        Helper.truncate_table(table_name)
+        Helper.setup()
         sql = f"insert into {table_name} (name) values ('datatest1')"
         data_provider = SqLiteProvider()
         data_provider.execute(sql)
@@ -96,7 +98,7 @@ class DataProviderBaseTest(unittest.TestCase):
         self.assertEqual(len(cleaned), 0)
 
     def test_fetchall(self):
-        Helper.truncate_table(table_name)
+        Helper.setup()
         sql = f"insert into {table_name} (name) values ('booger'), ('testing')"
         data_provider = SqLiteProvider()
         data_provider.execute(sql)
@@ -108,6 +110,7 @@ class DataProviderBaseTest(unittest.TestCase):
         self.assertEqual(len(data_provider.fetchall(actual_sql)), 0)
 
     def test_fetchmany(self):
+        Helper.setup()
         sql = f"insert into {table_name} (name) values ('boogers'), ('boogers1'), ('boogers3'), ('boogers4')"
         data_provider = SqLiteProvider()
         data_provider.execute(sql)
@@ -118,6 +121,7 @@ class DataProviderBaseTest(unittest.TestCase):
         Helper.truncate_table(table_name)
 
     def test_fetchone(self):
+        Helper.setup()
         sql = f"insert into {table_name} (name) values ('fetchone')"
         data_provider = SqLiteProvider()
         data_provider.execute(sql)
@@ -141,12 +145,14 @@ class DataProviderBaseTest(unittest.TestCase):
         data_provider.execute(f'drop table {table_name}')
 
     def test_execute_scripts_fail(self):
+        Helper.setup()
         sql = f"create table if not exists {table_name} (id integer not null primary key autoincrement," \
               " name varchar(64) not null)"
         data_provider = SqLiteProvider()
         self.assertRaises(Exception, lambda: data_provider.execute_scripts(sql))
 
     def test_fetchallwithparameters(self):
+        Helper.setup()
         data_provider = SqLiteProvider()
         sql = f'insert into {table_name} (name) values (?), (?)'
         data_provider.execute(sql, 'test1', 'test2')

@@ -23,7 +23,7 @@ class MariaDbConnector(_ConnectorBase):
         )
 
 
-class _SqLite3Connector(_ConnectorBase):
+class SqLite3Connector(_ConnectorBase):
     @staticmethod
     def get_connection(connection_string):
         return sqlite3.connect(connection_string.database_path)

@@ -11,8 +11,8 @@ class ConnectionFactory(object):
 
         try:
             return connector.get_connection(connection_string)
-        except Exception:
-            raise _ConnectorException(f'A connector named {connection_string.connector_name} could not be found.')
+        except Exception as e:
+            raise _ConnectorException(e)
 
     @staticmethod
     def _get_connector_by_name(connector_name: str):

@@ -8,14 +8,6 @@ table_name: str = 'test_table'
 sqlite_connection = ConnectionString(database_path=f'{os.path.dirname(os.path.abspath(__file__))}/db/tests.sqlite3')
 failed_connection = ConnectionString(database_path=f'{os.path.dirname(os.path.abspath(__file__))}/db/error_db.txt')
 
-# mariadb_connection = ConnectionString('datahound_mariadb',
-#                                       user='cms_user',
-#                                       password='cms_pass',
-#                                       host='127.0.0.1',
-#                                       port=3307,
-#                                       database_name='cms_test'
-#                                       )
-
 
 class SqLiteProvider(DataProviderBase):
     def __init__(self):

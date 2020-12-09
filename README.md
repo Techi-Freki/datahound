@@ -12,34 +12,32 @@ SqLite data access layer for python.
 * execute(sql: str, *parameters) -> None
 * execute_scripts(sql: str) -> None
 
-##Modules
-encoders
-
 ##Usage
 
 ###Extending Provider Base
 
-    from datahound import DataProviderBase
+    from datahound import DataProviderBase, ConnectionString
+
+
+    # add the path to the sqlite db to the connection string object
+    sqlite_connection = ConnectionString(database_path='/path/to/db.sqlite')
+    sqlite_connection_2 = ConnectionString(database-path='/alt/path/to/db.sqlite')
     
     
     # extend the provider base class
     class DataProviderOne(DataProviderBase):
-        db_path = '/path/to/database/test.db'
-        
-        def __init__(self):
-            super().__init__(DataProviderOne.db_path)
+        def __init__(self, connection_string):
+            super().__init__(connection_string)
     
     
     class DataProviderTwo(DataProviderBase):
-        db_path = '../alternate/data/test.db
-        
-        def __init__(self):
-            super().__init__(DataProviderTwo.db_path)
+        def __init__(self, connection_string):
+            super().__init__(connection_string)
     
     
     class AppDataProvider(object):
-        test_data_one = new DataProviderOne()
-        test_data_two = new DataProviderTwo()
+        test_data_one = new DataProviderOne(sqlite_connection)
+        test_data_two = new DataProviderTwo(sqlite_connection_2)
     
 ###Running Queries
 
@@ -84,10 +82,18 @@ encoders
     get_record(1)
     >> (1, 'Mark', 25)
 
+###Extensibility
+
+It is now possible to add custom connectors to datahound. Use the entry point group 'datahound.connectors' for adding new database connectors.
+
+See the code in [datahound_mariadb](https://python.dbcombs.com/simple/datahound_mariadb) for a better example of how this is accomplished.
+
 ##Changelog
 
 2.0.0
-* Added MariaDB support.
+* Added database connector plugin support.
+* Removed encoder support from 1.1.2.
+* Removed deprecated functionality.
 
 1.1.2
 * Added an encoder module with a DatahoundEncoder class.

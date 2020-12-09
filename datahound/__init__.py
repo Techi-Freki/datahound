@@ -1,16 +1,15 @@
 from .execution import _ExecutionType, _Executor
-from .factories import DatabaseType
 
 
 class ConnectionString(object):
-    def __init__(self, database_type: DatabaseType, **kwargs):
+    def __init__(self, connector_name: str, **kwargs):
         self.database_path = None
         self.database_name = None
         self.user = None
         self.password = None
         self.host = None
         self.port = None
-        self.database_type = database_type
+        self.connector_name = connector_name
 
         for key, value in kwargs.items():
             if hasattr(self, key):

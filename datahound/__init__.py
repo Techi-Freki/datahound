@@ -2,7 +2,7 @@ from .execution import _ExecutionType, _Executor
 
 
 class ConnectionString(object):
-    def __init__(self, connector_name: str, **kwargs):
+    def __init__(self, connector_name: str or None = None, **kwargs):
         self.database_path = None
         self.database_name = None
         self.user = None

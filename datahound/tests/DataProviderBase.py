@@ -1,18 +1,14 @@
 import unittest
 import os
 
-from datahound import DataProviderBase
-from datahound import ConnectionString
+from datahound import DataProviderBase, ConnectionString
 
-
-# TODO: Fix tests for both sqlite and mariadb
 
 table_name: str = 'test_table'
+sqlite_connection = ConnectionString(database_path=f'{os.path.dirname(os.path.abspath(__file__))}/db/tests.sqlite3')
+failed_connection = ConnectionString(database_path=f'{os.path.dirname(os.path.abspath(__file__))}/db/error_db.txt')
 
-sqlite_connection = ConnectionString('datahound_sqlite',
-                                     database_path=f'{os.path.dirname(os.path.abspath(__file__))}/db/tests.sqlite3')
-
-# mariadb_connection = ConnectionString(DatabaseType.MARIADB,
+# mariadb_connection = ConnectionString('datahound_mariadb',
 #                                       user='cms_user',
 #                                       password='cms_pass',
 #                                       host='127.0.0.1',
@@ -20,23 +16,13 @@ sqlite_connection = ConnectionString('datahound_sqlite',
 #                                       database_name='cms_test'
 #                                       )
 
-failed_connection = ConnectionString('datahound_sqlite',
-                                     database_path=f'{os.path.dirname(os.path.abspath(__file__))}/db/error_db.txt')
-
 
 class SqLiteProvider(DataProviderBase):
     def __init__(self):
         super().__init__(sqlite_connection)
 
 
-# class MariaDbProvider(DataProviderBase):
-#     def __init__(self):
-#         super().__init__(mariadb_connection)
-
-
 class FalseProvider(DataProviderBase):
-    db_path = 'db/error_db.txt'
-
     def __init__(self):
         super().__init__(failed_connection)
 

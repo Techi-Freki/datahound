@@ -90,6 +90,9 @@ See the code in [datahound_mariadb](https://python.dbcombs.com/simple/datahound_
 
 ##Changelog
 
+2.0.1
+* Added driver property to the connection string object.
+
 2.0.0
 * Added database connector plugin support.
 * Removed encoder support from 1.1.2.

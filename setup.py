@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='datahound',
-    version='2.0.0',
+    version='2.0.1',
     packages=find_packages(),
     url='https://python.dbcombs.com/simple/datahound',
     license='MIT',

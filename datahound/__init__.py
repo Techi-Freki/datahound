@@ -9,6 +9,7 @@ class ConnectionString(object):
         self.password = None
         self.host = None
         self.port = None
+        self.driver = None
         self.connector_name = connector_name
 
         for key, value in kwargs.items():

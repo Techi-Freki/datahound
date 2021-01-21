@@ -59,7 +59,10 @@ class _Executor(object):
                 cursor.execute(sql, *parameters)
         else:
             if execution_type is _ExecutionType.EXECUTE_SCRIPT:
-                cursor.executescript(sql)
+                try:
+                    cursor.executescript(sql)
+                except:
+                    self._executescript(sql, cursor)
             else:
                 cursor.execute(sql)
 
@@ -81,3 +84,9 @@ class _Executor(object):
             return True
         else:
             return False
+
+    def _executescript(self, sql: str, cursor) -> None:
+        sql = sql[:-1] if sql.endswith(';') else sql
+
+        for item in sql.split(';'):
+            cursor.execute(item)

@@ -1,8 +1,8 @@
-#Datahound
+# Datahound
 
 SqLite data access layer for python.
 
-##Methods
+## Methods
 
 * fetchone(sql: str, *parameters) -> tuple
 * fetchmany(amount: int, sql: str, *parameters) -> list
@@ -12,9 +12,9 @@ SqLite data access layer for python.
 * execute(sql: str, *parameters) -> None
 * execute_scripts(sql: str) -> None
 
-##Usage
+## Usage
 
-###Extending Provider Base
+### Extending Provider Base
 
     from datahound import DataProviderBase, ConnectionString
 
@@ -39,7 +39,7 @@ SqLite data access layer for python.
         test_data_one = DataProviderOne(sqlite_connection)
         test_data_two = DataProviderTwo(sqlite_connection_2)
     
-###Running Queries
+### Running Queries
 
     def get_data():
         sql = 'SELECT id, name, age FROM user;'
@@ -64,7 +64,7 @@ SqLite data access layer for python.
     >> [(1, 'Mark', 25), (2, 'Jane', 31), (3, 'Steve', 45), (4, 'Angela', 27)]
     
     
-###Parameterized Data
+### Parameterized Data
     
     def get_record(id):
         sql = 'SELECT id, name, age FROM user WHERE id = ?'
@@ -82,13 +82,13 @@ SqLite data access layer for python.
     get_record(1)
     >> (1, 'Mark', 25)
 
-###Extensibility
+### Extensibility
 
 It is now possible to add custom connectors to datahound. Use the entry point group 'datahound.connectors' for adding new database connectors.
 
 See the code in [datahound_mariadb](https://python.dbcombs.com/simple/datahound_mariadb) for a better example of how this is accomplished.
 
-##Changelog
+## Changelog
 
 2.0.2
 * Bug fix

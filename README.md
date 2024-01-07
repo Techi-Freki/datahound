@@ -90,13 +90,6 @@ See the code in [datahound_mariadb](https://python.dbcombs.com/simple/datahound_
 
 ## Changelog
 
-3.0.1
-* Updated Executor with safer connection handling.
-
-3.0.0
-* Python 3.12 minimum
-* Updated ConnectionFactory for new Python 3.12 syntax
-
 2.0.2
 * Bug fix
 

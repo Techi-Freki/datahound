@@ -33,59 +33,49 @@ class _Executor(object):
             self._execute(execution_type, sql)
 
     def _fetch(self, fetch_type, amount, sql, *parameters) -> list or tuple:
-        connection = ConnectionFactory.get_connection(self.connection_string)
-        cursor = connection.cursor()
-        cursor.execute(sql, *parameters)
-        results = None
+        with ConnectionFactory.get_connection(self.connection_string) as connection:
+            cursor = connection.cursor()
+            cursor.execute(sql, *parameters)
 
-        if fetch_type is _ExecutionType.FETCH_ALL:
-            results = cursor.fetchall()
-        elif fetch_type is _ExecutionType.FETCH_MANY:
-            results = cursor.fetchmany(amount)
-        elif fetch_type is _ExecutionType.FETCH_ONE:
-            results = cursor.fetchone()
-
-        connection.close()
-        return results
+            match fetch_type:
+                case _ExecutionType.FETCH_ALL: return cursor.fetchall()
+                case _ExecutionType.FETCH_MANY: return cursor.fetchmany(amount)
+                case _ExecutionType.FETCH_ONE: return cursor.fetchone()
+                case _: return None
 
     def _execute(self, execution_type, sql, *parameters) -> int or None:
-        connection = ConnectionFactory.get_connection(self.connection_string)
-        cursor = connection.cursor()
+        with ConnectionFactory.get_connection(self.connection_string) as connection:
+            cursor = connection.cursor()
 
-        if parameters:
-            if execution_type is _ExecutionType.EXECUTE_MANY:
-                cursor.executemany(sql, *parameters)
+            if parameters:
+                if execution_type is _ExecutionType.EXECUTE_MANY:
+                    cursor.executemany(sql, *parameters)
+                else:
+                    cursor.execute(sql, *parameters)
             else:
-                cursor.execute(sql, *parameters)
-        else:
-            if execution_type is _ExecutionType.EXECUTE_SCRIPT:
-                try:
-                    cursor.executescript(sql)
-                except:
-                    self._executescript(sql, cursor)
-            else:
-                cursor.execute(sql)
+                if execution_type is _ExecutionType.EXECUTE_SCRIPT:
+                    try:
+                        cursor.executescript(sql)
+                    except:
+                        self._executescript(sql, cursor)
+                else:
+                    cursor.execute(sql)
 
-        connection.commit()
-        return_id = None
+            connection.commit()
 
         if execution_type is _ExecutionType.RETURN_ID:
-            return_id = cursor.lastrowid
+            return cursor.lastrowid
 
-        connection.close()
+        return None
 
-        if return_id is not None:
-            return return_id
-
-    def _execution_is_fetch(self, execution_type: _ExecutionType) -> bool:
-        if execution_type is _ExecutionType.FETCH_ALL \
+    @staticmethod
+    def _execution_is_fetch(execution_type: _ExecutionType) -> bool:
+        return execution_type is _ExecutionType.FETCH_ALL \
             or execution_type is _ExecutionType.FETCH_MANY \
-            or execution_type is _ExecutionType.FETCH_ONE:
-            return True
-        else:
-            return False
+            or execution_type is _ExecutionType.FETCH_ONE
 
-    def _executescript(self, sql: str, cursor) -> None:
+    @staticmethod
+    def _executescript(sql: str, cursor) -> None:
         sql = sql[:-1] if sql.endswith(';') else sql
 
         for item in sql.split(';'):

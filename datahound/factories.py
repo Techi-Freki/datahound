@@ -16,7 +16,7 @@ class ConnectionFactory(object):
 
     @staticmethod
     def _get_connector_by_name(connector_name: str):
-        connectors = importlib.metadata.entry_points()['datahound.connectors']
+        connectors = importlib.metadata.entry_points().select(group='datahound.connectors')
 
         for connector in connectors:
             if connector.name == connector_name:

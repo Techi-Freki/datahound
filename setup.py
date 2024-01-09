@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='datahound',
-    version='2.0.2',
+    version='3.0.0',
     packages=find_packages(),
     url='https://python.dbcombs.com/simple/datahound',
     license='MIT',
@@ -22,9 +22,9 @@ setup(
         'datahound.connectors': ['datahound_sqlite=datahound.connectors:SqLite3Connector']
     },
     classifiers=[
-        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.12',
         'License :: MIT License',
         'Operating System :: OS Independent'
     ],
-	include_package_data=True
+    include_package_data=True
 )

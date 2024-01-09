@@ -90,6 +90,10 @@ See the code in [datahound_mariadb](https://python.dbcombs.com/simple/datahound_
 
 ## Changelog
 
+3.0.0
+* Upgrade to Python 3.12
+* Updated entry_points syntax for 3.12
+
 2.0.2
 * Bug fix
 

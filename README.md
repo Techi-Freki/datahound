@@ -21,7 +21,7 @@ SqLite data access layer for python.
 
     # add the path to the sqlite db to the connection string object
     sqlite_connection = ConnectionString(database_path='/path/to/db.sqlite')
-    sqlite_connection_2 = ConnectionString(database-path='/alt/path/to/db.sqlite')
+    sqlite_connection_2 = ConnectionString(database_path='/alt/path/to/db.sqlite')
     
     
     # extend the provider base class
@@ -89,6 +89,11 @@ It is now possible to add custom connectors to datahound. Use the entry point gr
 See the code in [datahound_mariadb](https://python.dbcombs.com/simple/datahound_mariadb) for a better example of how this is accomplished.
 
 ## Changelog
+
+3.0.1
+* Added workflows to github
+* Refactored unit tests
+* Fixed typo in the README file
 
 3.0.0
 * Upgrade to Python 3.12

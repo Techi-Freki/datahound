@@ -41,7 +41,7 @@ class Helper(object):
         data_provider.execute(sql)
 
 
-class DataProviderBaseTest(unittest.TestCase):
+class TestCaseDataProviderBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         Helper.setup()

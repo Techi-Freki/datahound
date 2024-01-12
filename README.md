@@ -1,5 +1,7 @@
 # Datahound
 
+![tests](https://github.com/Techi-Freki/datahound/actions/workflows/unit-tests.yaml/badge.svg?event=push)
+
 SqLite data access layer for python.
 
 ## Methods

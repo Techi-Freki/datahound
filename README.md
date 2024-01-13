@@ -1,6 +1,7 @@
 # Datahound
 
 ![tests](https://github.com/Techi-Freki/datahound/actions/workflows/unit-tests.yaml/badge.svg?event=push)
+![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/techi-freki/cb46c7a4cb976b6c148c3c984c7f26d6/raw/coverage.json)
 
 SqLite data access layer for python.
 

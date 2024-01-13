@@ -89,7 +89,7 @@ SqLite data access layer for python.
 
 It is now possible to add custom connectors to datahound. Use the entry point group 'datahound.connectors' for adding new database connectors.
 
-See the code in [datahound_mariadb](https://python.dbcombs.com/simple/datahound_mariadb) for a better example of how this is accomplished.
+See the code in [datahound_mariadb](https://github.com/Techi-Freki/datahound_mariadb) for a better example of how this is accomplished.
 
 ## Changelog
 

@@ -1,0 +1,53 @@
+3.0.2
+* Updating the workflow to move to use updated github actions
+
+3.0.1
+* Added workflows to github
+* Refactored unit tests
+* Fixed typo in the README file
+
+3.0.0
+* Upgrade to Python 3.12
+* Updated entry_points syntax for 3.12
+
+2.0.2
+* Bug fix
+
+2.0.1
+* Added driver property to the connection string object.
+
+2.0.0
+* Added database connector plugin support.
+* Removed encoder support from 1.1.2.
+* Removed deprecated functionality.
+
+1.1.2
+* Added an encoder module with a DatahoundEncoder class.
+
+1.1.1
+
+* Refactored code to improve performance and comply with PEP.
+* Updated README.md formatting.
+
+1.1.0
+
+* Added **insert_many** and **execute_scripts** to methods.
+* Updated README.md and cleaned up private method in package.
+
+1.0.2
+
+* Added **insert_return_id** and deprecated **execute_return_id** due to readability issues.
+* Removed extra space in the setup.py file.
+
+1.0.1
+
+* Added MANIFEST.in and updated setup.py.
+* Updated README.md to give clearer sql statements in the usage section.
+
+1.0.0
+
+* Added **execute_return_id** method, a method that returns the last inserted id after a successful insert.
+
+1.0.0RC1
+
+* Initial Release.

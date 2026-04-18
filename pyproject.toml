@@ -1,0 +1,26 @@
+[project]
+name = "datahound"
+description = "sqlite3 data access layer"
+requires-python = ">= 3.8"
+dynamic = ["version"]
+dependencies = []
+authors = [ {name = "Techi-Freki", email = "techifreki@proton.me"} ]
+maintainers = [ {name = "Techi-Freki", email = "techifreki@proton.me"} ]
+readme = "README.md"
+license = "MIT"
+license-files = [ "LICENSE" ]
+classifiers = [
+"Development Status :: 5 - Production/Stable",
+"Intended Audience :: Developers",
+"Programming Language :: Python :: 3.8"
+]
+
+[project.urls]
+Repository = "https://github.com/Techi-Freki/datahound"
+
+[project.scripts]
+datahound_sqlite = "datahound.connectors:SqLite3Connector"
+
+[tool.coverage.run]
+branch = true
+omit = [ "*/tests/*.py" ]

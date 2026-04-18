@@ -7,7 +7,6 @@ dependencies = []
 authors = [ {name = "Techi-Freki", email = "techifreki@proton.me"} ]
 maintainers = [ {name = "Techi-Freki", email = "techifreki@proton.me"} ]
 readme = "README.md"
-license = "MIT"
 license-files = [ "LICENSE" ]
 classifiers = [
 "Development Status :: 5 - Production/Stable",

@@ -2,8 +2,7 @@
 name = "datahound"
 description = "sqlite3 data access layer"
 requires-python = ">= 3.8"
-dynamic = ["version"]
-dependencies = []
+dynamic = ["version", "license"]
 authors = [ {name = "Techi-Freki", email = "techifreki@proton.me"} ]
 maintainers = [ {name = "Techi-Freki", email = "techifreki@proton.me"} ]
 readme = "README.md"
